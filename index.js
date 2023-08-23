@@ -138,7 +138,7 @@ function doSomethingWithResponse(data) {
         message += `    📊 Status: ${item.isSubmitted ? '✅' : '❌'}\n`;
         message += `    ⚖️ Amount: ${item.amount} ${item.product.category === 1 ? 'm' : item.product.category === 2 ? 'kv.m' : item.product.category === 3 ? 'kg' : 'dona'}\n`;
         message += `    💰 Price: ${item.price}\n`;
-        message += `    ⌛️ Deadline: ${item.deadline}\n\n`;
+        message += `    ⌛️ Deadline: ${item.deadLine}\n\n`;
       });
   
       // Sahifa navigatsiyasi uchun inline buttonlar
@@ -180,7 +180,7 @@ function doSomethingWithResponse(data) {
               newMessage += `    📊 Status: ${item.isSubmitted ? '✅' : '❌'}\n`;
               newMessage += `    ⚖️ Amount: ${item.amount} ${item.product.category === 1 ? 'm' : item.product.category === 2 ? 'kv.m' : item.product.category === 3 ? 'kg' : 'dona'}\n`;
               newMessage += `    💰 Price: ${item.price}\n`;
-              newMessage += `    ⌛️ Deadline: ${item.deadline}\n\n`;
+              newMessage += `    ⌛️ Deadline: ${item.deadLine}\n\n`;
             });
   
             // Sahifani yangilash uchun mesajni tahrirlash
