@@ -30,7 +30,7 @@ function formatDate(date) {
 
 let responseData;
 
-axios.get('http://api.etradingcrm.uz/api/TgBot')
+axios.get('https://api.etradingcrm.uz/api/TgBot')
   .then(response => {
     responseData = response.data;
     doSomethingWithResponse(responseData);
@@ -89,7 +89,7 @@ function doSomethingWithResponse(data) {
     const selectedDate = match[1];
   
     try {
-      const response = await axios.get('http://api.etradingcrm.uz/api/Attendance/All');
+      const response = await axios.get('https://api.etradingcrm.uz/api/Attendance/All');
       const data = response.data;
       const filteredData = data.filter(item => item.day === selectedDate);
   
@@ -119,7 +119,7 @@ function doSomethingWithResponse(data) {
     if (data.includes(chatId)) {
     let currentPage = 1; // Joriy sahifa raqami
   
-    axios.get('http://api.etradingcrm.uz/Api/Order/All')
+    axios.get('https://api.etradingcrm.uz/Api/Order/All')
     .then(response => {
       const data = response.data;
   
@@ -215,7 +215,7 @@ function doSomethingWithResponse(data) {
     if (data.includes(chatId)) {
 
     let currentPage = 1;
-    axios.get('http://api.etradingcrm.uz/api/Product/All')
+    axios.get('https://api.etradingcrm.uz/api/Product/All')
       .then(response => {
         const data = response.data;
     
@@ -303,7 +303,7 @@ function doSomethingWithResponse(data) {
   bot.onText(/💵 Salary/, (msg) => {
     const chatId = msg.chat.id;
     if (data.includes(chatId)) {
-    axios.get('http://api.etradingcrm.uz/api/EmployeeSalary/All')
+    axios.get('https://api.etradingcrm.uz/api/EmployeeSalary/All')
     .then(response => {
       const data = response.data;
 
