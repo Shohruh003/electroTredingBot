@@ -298,37 +298,93 @@ function doSomethingWithResponse(data) {
     }
   });
 
-
-
   bot.onText(/💵 Salary/, (msg) => {
     const chatId = msg.chat.id;
     if (data.includes(chatId)) {
-    axios.get('https://api.etradingcrm.uz/api/EmployeeSalary/All')
-    .then(response => {
-      const data = response.data;
 
-      let message = `Salary \n\n`;
-      data.forEach((item, index) => {
-        message += `${index + 1}. ${item.employee.name} + ${item.employee.lastName}\n\n`;
+    let currentPage = 1;
+    axios.get('https://api.etradingcrm.uz/api/EmployeeSalary/All')
+      .then(response => {
+        const data = response.data;
+    
+        // Sahifalarni hisoblash
+        const totalPages = Math.ceil(data.length / pageSize);
+    
+        // Sahifa tartibidagi boshlang'ich va oxirgi indekslar
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = currentPage * pageSize;
+        const orders = data.slice(startIndex, endIndex);
+    
+        let message = `Finished Product \n\n`;
+        orders.forEach((item, index) => {
+          message += `${index + 1}. ${item.employee.name} + ${item.employee.lastName}\n\n`;
         message += `    💵 Total: ${item.employee.salary} so'm\n`;
         message += `    💰 Avans: ${item.summs} so'm\n`;
         message += `    💸 Remaining: ${item.employee.salary - item.summs} so'm\n\n`;
+        });
+    
+        // Sahifa navigatsiyasi uchun inline buttonlar
+        const inlineKeyboard = [
+          [
+            { text: '⬅️ Previous', callback_data: 'previous' },
+            { text: 'Next ➡️', callback_data: 'next' }
+          ]
+        ];
+    
+        const options = {
+          reply_markup: {
+            inline_keyboard: inlineKeyboard
+          }
+        };
+    
+        bot.sendMessage(chatId, message, options)
+          .then(sentMessage => {
+            const messageId = sentMessage.message_id;
+    
+            // Inline buttonlarni qabul qilish
+            bot.on('callback_query', (callbackQuery) => {
+              const action = callbackQuery.data;
+    
+              if (action === 'previous' && currentPage > 1) {
+                currentPage--;
+              } else if (action === 'next' && currentPage < totalPages) {
+                currentPage++;
+              }
+    
+              const newStartIndex = (currentPage - 1) * pageSize;
+              const newEndIndex = currentPage * pageSize;
+              const newOrders = data.slice(newStartIndex, newEndIndex);
+    
+              let newMessage = `Finished Product \n\n`;
+              newOrders.forEach((item, index) => {
+                newMessage += `${newStartIndex + index + 1}. ${item.employee.name} + ${item.employee.lastName}\n\n`;
+        newMessage += `    💵 Total: ${item.employee.salary} so'm\n`;
+        newMessage += `    💰 Avans: ${item.summs} so'm\n`;
+        newMessage += `    💸 Remaining: ${item.employee.salary - item.summs} so'm\n\n`;
+              });
+    
+              // Sahifani yangilash uchun mesajni tahrirlash
+              bot.editMessageText(newMessage, {
+                chat_id: chatId,
+                message_id: messageId,
+                reply_markup: {
+                  inline_keyboard: inlineKeyboard
+                }
+              });
+            });
+          })
+          .catch(error => {
+            console.error('Error sending message:', error);
+          });
+      })
+      .catch(error => {
+        console.error('Error retrieving attendance data:', error);
+        bot.sendMessage(chatId, 'Davomat ma’lumotlarini olishda xatolik yuz berdi.');
       });
-
-      bot.sendMessage(chatId, message);
-    })
-    .catch(error => {
-      console.error('Error retrieving attendance data:', error);
-      bot.sendMessage(chatId, 'Davomat ma’lumotlarini olishda xatolik yuz berdi.');
-    });
-
-  } else {
-    bot.sendMessage(chatId, 'Kechirasiz bu botdan foydalana olmaysiz !')
-  }
+    } else {
+      bot.sendMessage(chatId, 'Kechirasiz bu botdan foydalana olmaysiz !')
+    }
   });
-
-
-
 
   bot.onText(/⬅️ ORQAGA/, (msg) => {
     const chatId = msg.chat.id;
