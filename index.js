@@ -8,26 +8,6 @@ const token = process.env.TOKEN
 
 const bot = new TelegramBot(token, { polling: true });
 
-const today = new Date();
-const fiveDaysAgo = new Date(today);
-fiveDaysAgo.setDate(today.getDate() - 4);
-
-const days = [];
-
-for (let i = 0; i < 5; i++) {
-  const day = new Date(fiveDaysAgo);
-  day.setDate(day.getDate() + i);
-  const formattedDate = formatDate(day);
-  days.push(formattedDate);
-}
-
-function formatDate(date) {
-  const year = date.getFullYear();
-  const month = ('0' + (date.getMonth() + 1)).slice(-2);
-  const day = ('0' + date.getDate()).slice(-2);
-  return `${year}-${month}-${day}`;
-}
-
 let responseData;
 
 axios.get('https://api.etradingcrm.uz/api/TgBot')
@@ -62,6 +42,26 @@ function doSomethingWithResponse(data) {
   bot.onText(/📝 Attendance/, (msg) => {
     const chatId = msg.chat.id;
     if (data.includes(chatId)) {
+      const today = new Date();
+const fiveDaysAgo = new Date(today);
+fiveDaysAgo.setDate(today.getDate() - 4);
+
+const days = [];
+
+for (let i = 0; i < 5; i++) {
+  const day = new Date(fiveDaysAgo);
+  day.setDate(day.getDate() + i);
+  const formattedDate = formatDate(day);
+  days.push(formattedDate);
+}
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+}
+
   let isAttendanceCommandHandled = false;
     if (!isAttendanceCommandHandled) {
       bot.sendMessage(chatId, '📝 Attendance', {
