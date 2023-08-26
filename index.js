@@ -43,14 +43,12 @@ function doSomethingWithResponse(data) {
     const chatId = msg.chat.id;
     if (data.includes(chatId)) {
       const today = new Date();
-const fiveDaysAgo = new Date(today);
-fiveDaysAgo.setDate(today.getDate() - 4);
 
 const days = [];
 
-for (let i = 0; i < 5; i++) {
-  const day = new Date(fiveDaysAgo);
-  day.setDate(day.getDate() + i);
+for (let i = 0; i < 6; i++) {
+  const day = new Date(today);
+  day.setDate(day.getDate() - i);
   const formattedDate = formatDate(day);
   days.push(formattedDate);
 }
@@ -67,8 +65,8 @@ function formatDate(date) {
       bot.sendMessage(chatId, '📝 Attendance', {
         reply_markup: {
           keyboard: [
-            [days[4], days[3], days[2]],
-            [days[1], days[0]],
+            [days[0], days[1], days[2]],
+            [days[3], days[4]],
             ['⬅️ ORQAGA']
           ],
           resize_keyboard: true
