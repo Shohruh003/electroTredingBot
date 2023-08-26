@@ -46,10 +46,11 @@ function doSomethingWithResponse(data) {
 
 const days = [];
 
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < 5; i++) {
   const day = new Date(today);
   day.setDate(day.getDate() - i);
   const formattedDate = formatDate(day);
+  console.log(formattedDate);
   days.push(formattedDate);
 }
 
