@@ -94,10 +94,10 @@ function formatDate(date) {
   
       let message = `📝 Attendance for 📅 ${selectedDate}\n\n`;
       filteredData.forEach((item, index) => {
-        message += `${index + 1}. ${item.firstName} + ${item.lastName}\n`;
-        message += `   🕧Late: ${item.lateHours}\n`;
-        message += `   ☀️Come: ${item.isMainWork ? '✅' : '❌'}\n`;
-        message += `   🕧Extra: ${item.extraWorkHours}\n\n`;
+        message += `${index + 1}. ${item.firstName} ${item.lastName}\n`;
+        message += `   ☀️ Asosiy ish : ${item.isMainWork ? '✅' : '❌'}\n`;
+        message += `   🕧 Kechikish vaqti : ${item.lateHours}\n`;
+        message += `   ⏳ Qo'shimcha ish vaqtin: ${item.extraWorkHours}\n\n`;
       });
   
       await bot.sendMessage(chatId, message);
